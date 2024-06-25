@@ -1,15 +1,15 @@
 # Xepelin Web Scraping API
 
 Esta aplicación está deployada en Render y permite realizar web scraping de la sección "Blog" de Xepelin para una categoría específica y guardar los datos en una hoja de Google Sheets. La API también envía una notificación a un webhook una vez que el scraping está completo.
-
+Inclui en el deploy Docker ya que tenía problemas con Render y la dependencia de Puppeteer.
 
 ## Tecnologías utilizadas
 
 - Node.js
 - Express
 - Puppeteer
-- Cheerio
 - Google Sheets API
+- Docker 
 
 ## Uso App
 
@@ -65,3 +65,4 @@ curl -X POST https://parte2-prueba-xepelin.onrender.com/api/xepelin/scrapping -H
 Para iniciar el servidor:
 ```bash
 yarn start
+
