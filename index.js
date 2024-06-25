@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(bodyParser.json()); 
 
-app.post('api/xepelin/scrapping', async (req, res) => {
+app.post('/api/xepelin/scrapping', async (req, res) => {
     const {category, webhook} = req.body;
 
     console.log("Recibiendo request con categoria:", category);

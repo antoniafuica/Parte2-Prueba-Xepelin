@@ -33,91 +33,42 @@ const scrappingBlog = async (category) => {
 
     const articles = [];
     for (let link of articleLinks) {
+        console.log(`Navegando al link: ${link}`);
         await page.goto(link, {waitUntil: 'networkidle2'});
         const article = await page.evaluate(() => {
-            const title = document.querySelector('h1.ArticleSingle_title__0DNjm')?.innerText || '';
-            const category = document.querySelector('a.text-primary-main.no-underline')?.innerText || '';
-            const author = document.querySelector('div.text-sm.dark:text-text-disabled')?.innerText || '';
-            const readingTime = document.querySelector('div.Text_body__snVk8.text-base.dark:text-text-disabled.dark:[&_a]:text-tertiary-main.text-grey-600')?.innerText || '';
+            const titleElement = document.querySelector('h1.ArticleSingle_title__0DNjm');
+            const categoryElement = document.querySelector('a.text-primary-main.no-underline');
+            const authorDiv = document.querySelector('div.text-sm.dark\\:text-text-disabled');
+            const readingTimeDiv = document.querySelector('div.Text_body__snVk8.text-base');
+
+            const title = titleElement ? titleElement.innerText : '';
+            const category = categoryElement ? categoryElement.innerText : '';
+            const author = authorDiv ? authorDiv.innerText : '';
+            const readingTime = readingTimeDiv ? readingTimeDiv.childNodes[0]?.textContent.trim() : '';
+
             return { title, category, author, readingTime }; 
         });
         articles.push(article);
-        console.log(`Scraped article: ${title}`);
     }
 
     await browser.close();
-    console.log(`Browser closed for category: ${category}`);
+    console.log(`Browser cerrado para categoria: ${category}`);
     return articles;
 };
 
 const saveGoogleSheet = async (data) => {  
     const request = {
         spreadsheetId: process.env.SPREADSHEET_ID,
-        range: 'Sheet1!J30',
+        range: 'Hoja1!A2',
         valueInputOption: 'RAW',
         resource: {
-            values: [
-                ['Titular', 'Categoría', 'Autor', 'Tiempo de lectura'],
-                ...data.map(article => [article.title, article.category, article.author, article.readingTime])
-            ]
-        }
+            values : data.map(article => [article.title, article.category, article.author, article.readingTime]),
+        },
     };
     await sheets.spreadsheets.values.append(request);
-    console.log("Data appended to Google Sheets");
+    console.log("Data agregada a Google Sheets");
 };
 
-
-// async function scrappingBlog(categoria){
-//     const url = `https://xepelin.com/blog/${categoria}`;
-//     const {data} = await axios.get(url);
-//     const $ = cheerio.load(data);
-
-//     let scrapedData = [];
-
-//     $('.blog-post').each((index, element) => {
-//         const title = $(element).find('.title').text();
-//         const author = $(element).find('.author').text();
-//         const readingTime = $(element).find('.reading-time').text();
-//         const publicationDate = $(element).find('.publication-date').text();
-//         const category = $(element).find('.category').text();
-
-//         scrapedData.push({
-//             title,
-//             category,
-//             author,
-//             readingTime,
-//             publicationDate,
-//         });
-//     });
-
-//     return scrapedData;
-// }
-
-// async function saveGoogleSheet(data){
-//     const auth = new google.auth.GoogleAuth({
-//         credentials: {
-//             client_email: process.env.GOOGLE_CLIENT_EMAIL,
-//             private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/gm, '\n')
-//         },
-//         scopes: ['https://www.googleapis.com/auth/spreadsheets']
-//     });
-
-//     const sheets = google.sheets({version: 'v4', auth});
-//     const spreadsheetId = process.env.SPREADSHEET_ID;
-
-//     const response = await sheets.spreadsheets.values.append({
-//         spreadsheetId,
-//         range: 'Sheet1!A1',
-//         valueInputOption: 'RAW',
-//         resource: {
-//             values: [
-//             ['Titular', 'Categoría', 'Autor', 'Tiempo de lectura', 'Fecha de publicación'],
-//             ...data.map(item => [item.title, item.category, item.author, item.readingTime, item.publicationDate])
-//             ]
-//         }
-//     });
-//     return `https://docs.google.com/spreadsheets/d/${spreadsheetId}`;
-// }
 
 module.exports = {
     scrappingBlog,
