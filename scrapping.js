@@ -14,9 +14,12 @@ const client = new google.auth.JWT(
 const sheets = google.sheets({version: 'v4', auth: client});
 
 const scrappingBlog = async (category) => {
+    console.log(`Empezando el browser con categoria: ${category}`);
     const browser = await puppeteer.launch({headless: true});
     const page = await browser.newPage();
     await page.goto(`https://xepelin.com/blog/${category}`, {waitUntil: 'networkidle2'});
+
+    console.log(`Pagina cargada con categoria: ${category}`);
 
     const articleLinks = await page.evaluate(() => {
         const links = [];
@@ -25,6 +28,8 @@ const scrappingBlog = async (category) => {
         });
         return links;
     });
+
+    console.log(`Encontre ${articleLinks.length} articles`);
 
     const articles = [];
     for (let link of articleLinks) {
@@ -37,9 +42,11 @@ const scrappingBlog = async (category) => {
             return { title, category, author, readingTime }; 
         });
         articles.push(article);
+        console.log(`Scraped article: ${title}`);
     }
 
     await browser.close();
+    console.log(`Browser closed for category: ${category}`);
     return articles;
 };
 
@@ -56,6 +63,7 @@ const saveGoogleSheet = async (data) => {
         }
     };
     await sheets.spreadsheets.values.append(request);
+    console.log("Data appended to Google Sheets");
 };
 
 
