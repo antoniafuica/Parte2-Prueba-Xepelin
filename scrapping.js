@@ -16,7 +16,7 @@ const scrappingBlog = async (category) => {
     const browser = await puppeteer.launch({
         headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        executablePath: puppeteer.executablePath()
+        executablePath: '/opt/render/project/.cache/puppeteer/chrome-linux/chrome'
     });
     const page = await browser.newPage();
     await page.goto(`https://xepelin.com/blog/${category}`, {waitUntil: 'networkidle2'});
