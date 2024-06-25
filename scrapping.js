@@ -11,9 +11,18 @@ const client = new google.auth.JWT(
 
 const sheets = google.sheets({version: 'v4', auth: client});
 
+
 const scrappingBlog = async (category) => {
     console.log(`Empezando el browser con categoria: ${category}`);
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        args: [
+          "--disable-setuid-sandbox",
+          "--no-sandbox",
+          "--single-process",
+          "--no-zygote",
+        ],
+        executablePath: puppeteer.executablePath(),
+      });
     const page = await browser.newPage();
     await page.goto(`https://xepelin.com/blog/${category}`, {waitUntil: 'networkidle2'});
 
