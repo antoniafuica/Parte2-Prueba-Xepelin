@@ -38,9 +38,30 @@ Incorporar body:
     }
     ```
 
+O con comando CURL: 
+
+````
+curl -X POST https://parte2-prueba-xepelin.onrender.com/api/xepelin/scrapping -H "Content-Type: application/json" -d '{
+  "category": "PyMEs",
+  "webhook": "https://hooks.zapier.com/hooks/catch/11217441/bfemddr/"
+}'
+````
+
 ## Links 
 - Link Google Sheets: `https://docs.google.com/spreadsheets/d/1Zi99g0ndE5D5zlvCvJux8MCzxLVqd5B-TmF40VpMcMk/edit?gid=0#gid=0`
 - Link API: `https://parte2-prueba-xepelin.onrender.com`
 - Link Github: `https://github.com/antoniafuica/Parte2-Prueba-Xepelin/tree/main`
 
+## Variables de entorno
+````
+    PORT=5001
+    GOOGLE_CLIENT_EMAIL=tu_email_de_servicio@google.com
+    GOOGLE_PRIVATE_KEY=tu_clave_privada
+    SPREADSHEET_ID=tu_id_de_google_sheets
+    EMAIL=tu_email_para_notificaciones
+````
 
+## Instrucciones para correr la aplicación
+Para iniciar el servidor:
+```bash
+yarn start
