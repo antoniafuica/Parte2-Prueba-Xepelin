@@ -17,7 +17,7 @@ Esta aplicación está deployada en Render y permite realizar web scraping de la
 
 Este endpoint recibe los parámetros `category` y `webhook` para iniciar el scraping y notificar cuando se complete.
 
-- `category` (string): La categoría del blog a scrapear (por ejemplo, "PyMEs").
+- `category` (string): La categoría del blog a scrapear (por ejemplo, pymes, corporativos, educacion-financiera).
 - `webhook` (string): `https://hooks.zapier.com/hooks/catch/11217441/bfemddr/`
 
 #### Ejemplo de uso
