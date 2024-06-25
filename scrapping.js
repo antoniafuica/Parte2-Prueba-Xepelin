@@ -13,8 +13,7 @@ const sheets = google.sheets({version: 'v4', auth: client});
 
 const scrappingBlog = async (category) => {
     console.log(`Empezando el browser con categoria: ${category}`);
-    console.log(await puppeteer.executablePath());
-    const browser = await puppeteer.launch({headless: true});
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(`https://xepelin.com/blog/${category}`, {waitUntil: 'networkidle2'});
 
