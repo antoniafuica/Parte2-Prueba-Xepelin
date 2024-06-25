@@ -42,7 +42,7 @@ O con comando CURL:
 
 ````
 curl -X POST https://parte2-prueba-xepelin.onrender.com/api/xepelin/scrapping -H "Content-Type: application/json" -d '{
-  "category": "PyMEs",
+  "category": "pymes",
   "webhook": "https://hooks.zapier.com/hooks/catch/11217441/bfemddr/"
 }'
 ````
