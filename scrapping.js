@@ -21,7 +21,10 @@ const scrappingBlog = async (category) => {
           "--single-process",
           "--no-zygote",
         ],
-        executablePath: puppeteer.executablePath(),
+        executablePath: 
+        process.env.NODE_ENV === "production"
+        ? process.env.PUPPETEER_EXECUTABLE_PATH
+        : puppeteer.executablePath(),
       });
     const page = await browser.newPage();
     await page.goto(`https://xepelin.com/blog/${category}`, {waitUntil: 'networkidle2'});
