@@ -15,9 +15,7 @@ const scrappingBlog = async (category) => {
     console.log(`Empezando el browser con categoria: ${category}`);
     const browser = await puppeteer.launch({
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        executablePath: puppeteer.executablePath()
-    });
+        args: ['--no-sandbox', '--disable-setuid-sandbox']    });
     const page = await browser.newPage();
     await page.goto(`https://xepelin.com/blog/${category}`, {waitUntil: 'networkidle2'});
 
