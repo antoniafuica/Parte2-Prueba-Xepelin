@@ -6,7 +6,7 @@ require('dotenv').config();
 const { scrappingBlog, saveGoogleSheet } = require('./scrapping');
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(bodyParser.json()); 
@@ -20,8 +20,13 @@ app.post('api/xepelin/scrapping', async (req, res) => {
         await saveGoogleSheet(articles); 
 
         await axios.post(webhook, { 
-            link: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`,
-            email: process.env.EMAIL
+            email: process.env.EMAIL,
+            link: `https://docs.google.com/spreadsheets/d/${process.env.SPREADSHEET_ID}`
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        
         });
         res.status(200).send('Scrapping completo y datos guardados en Google Sheet');    
     } catch (error) {
